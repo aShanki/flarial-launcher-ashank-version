@@ -1,0 +1,11 @@
+[package]
+name = "sacrificial-target"
+version = "0.0.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[[bin]]
+name = "sacrificial-target"
+path = "src/main.rs"

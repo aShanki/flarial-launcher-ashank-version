@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@import "@fontsource/space-grotesk/400.css";
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/600.css";
+@import "@fontsource/space-grotesk/700.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/jetbrains-mono/400.css";
+
+@theme {
+  --color-base: oklch(0.16 0.01 25);
+  --color-elevated: oklch(0.22 0.012 25);
+  --color-accent: oklch(0.65 0.24 22);
+  --color-accent-soft: oklch(0.65 0.24 22 / 0.16);
+  --color-foreground: oklch(1 0 0);
+  --color-muted: oklch(1 0 0 / 0.6);
+  --color-faint: oklch(1 0 0 / 0.35);
+  --color-border: oklch(1 0 0 / 0.07);
+  --color-border-strong: oklch(1 0 0 / 0.14);
+  --color-destructive: oklch(0.6 0.22 27);
+
+  --radius: 13px;
+  --radius-sm: 8px;
+  --radius-lg: 20px;
+
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+html, body, #root { height: 100%; }
+
+html {
+  font-family: var(--font-sans);
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-base);
+  color: var(--color-foreground);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+@layer base {
+  * { -webkit-user-select: none; user-select: none; }
+  input, textarea, [contenteditable] { -webkit-user-select: text; user-select: text; }
+}
+
+.font-display { font-family: var(--font-display); letter-spacing: -0.02em; }
+.font-mono    { font-family: var(--font-mono); }
+
+
+/* atmospheric vignette pulling focus to centre */
+.vignette {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(95% 70% at 50% 45%, transparent 35%, oklch(0.16 0.01 25 / 0.7) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* the actual app content sits above the decoration layer */
+.app-shell { position: relative; z-index: 1; }

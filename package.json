@@ -1,0 +1,21 @@
+{
+  "name": "flarial-launcher-workspace",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "pnpm --filter desktop dev",
+    "build": "pnpm --filter desktop build",
+    "tauri": "pnpm --filter desktop tauri",
+    "test:unit": "cargo test --workspace --lib",
+    "test:win32": "cargo test --workspace --tests",
+    "test:mc": "cargo test -p flarial-launcher --release --features minecraft-required --test mc_integration -- --test-threads=1",
+    "test:parity": "node tests/parity/run.mjs",
+    "test:e2e": "cargo test --release --test e2e_smoke -- --test-threads=1",
+    "test:e2e:wdio": "wdio run tests/e2e/wdio.conf.ts",
+    "test:fast": "pnpm test:unit && pnpm test:win32",
+    "test:full": "pnpm test:fast && pnpm test:e2e && pnpm test:mc && pnpm test:parity",
+    "size:check": "node scripts/check-installer-size.mjs",
+    "typecheck": "pnpm --filter desktop typecheck",
+    "lint": "pnpm --filter desktop lint"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "updates-check",
+  "subcommand": ["updates"],
+  "ignore_json_fields": [],
+  "expect_minecraft_spawned": false
+}

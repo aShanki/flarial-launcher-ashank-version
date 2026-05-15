@@ -1,0 +1,53 @@
+[package]
+name = "flarial-launcher"
+version = "0.0.0"
+description = "Flarial Launcher (Tauri rewrite)"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+default-run = "flarial-launcher"
+
+[lib]
+name = "flarial_launcher_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[[bin]]
+name = "flarial-launcher"
+path = "src/main.rs"
+
+[[bin]]
+name = "flarial-cli"
+path = "src/bin/cli.rs"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["unstable"] }
+tauri-plugin-opener = "2"
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+tokio.workspace = true
+reqwest.workspace = true
+sha2.workspace = true
+quick-xml.workspace = true
+notify.workspace = true
+parking_lot.workspace = true
+uuid.workspace = true
+
+[target.'cfg(target_os = "windows")'.dependencies]
+windows.workspace = true
+windows-core.workspace = true
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
+minecraft-required = []
+
+[profile.release]
+inherits = "release"

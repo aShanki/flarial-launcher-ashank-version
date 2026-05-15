@@ -1,0 +1,6 @@
+{
+  "name": "package-query",
+  "subcommand": ["package"],
+  "ignore_json_fields": ["installed_path"],
+  "expect_minecraft_spawned": false
+}

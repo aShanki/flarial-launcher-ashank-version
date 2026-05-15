@@ -1,0 +1,17 @@
+[package]
+name = "canary-dll"
+version = "0.0.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[lib]
+name = "flarial_canary"
+crate-type = ["cdylib"]
+
+[target.'cfg(target_os = "windows")'.dependencies]
+windows = { workspace = true, features = [
+    "Win32_System_SystemServices",
+    "Win32_Foundation",
+] }
