@@ -8,6 +8,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using Flarial.Runtime.Services;
+using Flarial.Launcher.Controls;
 using Flarial.Runtime.Unmanaged;
 
 namespace Flarial.Launcher.Views;
@@ -32,28 +33,32 @@ public partial class HomeView : UserControl
                 if (await promotion.GetImageAsync() is not { } bytes)
                     return;
 
-                using MemoryStream stream = new(bytes, false);
-
-                Image image = new()
+                try
                 {
-                    Width = 320 * 0.8,
-                    Height = 50 * 0.8,
-                    Cursor = s_cursor,
-                    Tag = promotion.Uri,
-                    Source = new Bitmap(stream)
-                };
-
-                image.PointerPressed += OnPointerPressed;
-                RenderOptions.SetBitmapInterpolationMode(image, BitmapInterpolationMode.HighQuality);
-
-                Promotions.Children.Add(image);
+                    using MemoryStream stream = new(bytes, false);
+                    var bitmap = new Bitmap(stream);
+                    Control image = SponsorAnalyticsService.TryIdentify(promotion.Uri, promotion.CampaignId, out var sponsor, out var campaign)
+                        ? new SponsorBannerImage(sponsor, campaign) { Source = bitmap }
+                        : new Image { Source = bitmap };
+                    image.Width = 320 * 0.8;
+                    image.Height = 50 * 0.8;
+                    image.Cursor = s_cursor;
+                    image.Tag = promotion.Uri;
+                    image.PointerPressed += OnPointerPressed;
+                    RenderOptions.SetBitmapInterpolationMode(image, BitmapInterpolationMode.HighQuality);
+                    Promotions.Children.Add(image);
+                }
+                catch (Exception) { }
             }, DispatcherPriority.Background);
         });
     }
 
     static void OnPointerPressed(object? sender, PointerPressedEventArgs args)
     {
+        if (!args.GetCurrentPoint(sender as Control).Properties.IsLeftButtonPressed) return;
         var file = (sender as Control)?.Tag as string;
-        if (file is { }) NativeMethods.ShellExecute(file);
+        if (file is null) return;
+        NativeMethods.ShellExecute(file);
+        if (sender is SponsorBannerImage banner) banner.RecordClick();
     }
 }
